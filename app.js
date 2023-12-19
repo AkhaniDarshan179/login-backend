@@ -3,11 +3,11 @@ import { validatePassword } from "./middleware/auth.js";
 import bodyParser from "body-parser";
 import connectDB from "./database/connectdb.js";
 import cors from "cors";
+import employeeController from "./controllers/employeeController.js";
 import express from "express";
 import passport from "passport";
 import session from "express-session";
 import userController from "./controllers/userController.js";
-import employeeController from "./controllers/employeeController.js";
 
 const app = express();
 const port = 8000;
@@ -44,6 +44,19 @@ app.get(
   passport.authenticate("jwt"),
   employeeController.getAllEmployee
 );
+
+app.post("/api/refresh-token", (req, res) => {
+  const { refreshToken } = req.body;
+
+  jwt.verify(refreshToken, "simbanic_refresh", (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+
+    const accessToken = generateAccessToken(user);
+    res.json({ accessToken });
+  });
+});
 
 app.post("/api/send-sms", userController.forgotPassword);
 app.post("/api/verify-code", userController.verifyCode);

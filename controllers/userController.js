@@ -52,8 +52,8 @@ const getUser = async (req, res) => {
     });
   }
 
-  const tokens = GenerateTokens(existingUser)
-  const  {accessToken, refreshToken} = tokens
+  const tokens = GenerateTokens(existingUser);
+  const { accessToken, refreshToken } = tokens;
 
   res.status(200).json({
     message: "Log In successfully.",
