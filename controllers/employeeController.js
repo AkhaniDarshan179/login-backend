@@ -20,14 +20,14 @@ const createEmployee = async (req, res) => {
   });
   await newEmployee.save();
   res.status(201).json({
-    message: "Employee added successfully!",
+    success: true,
+    message: "Employee added successfully",
   });
 };
 
 const getAllEmployee = async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
-      // Handle unauthenticated user
       return res.status(401).json({
         success: false,
         error: "Unauthorized",

@@ -1,10 +1,10 @@
 "use strict";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import UserModel from "../model/User.js";
 import OtpModel from "../model/Otp.js";
 import twilio from "twilio";
+import GenerateTokens from "../utils/tokens.js";
 
 const createUser = async (req, res) => {
   const errors = validationResult(req).mapped();
@@ -21,6 +21,7 @@ const createUser = async (req, res) => {
 
   if (existingUser) {
     return res.status(409).json({
+      success: false,
       message: "User already exists",
     });
   }
@@ -51,18 +52,13 @@ const getUser = async (req, res) => {
     });
   }
 
-  const payload = {
-    name: existingUser.name,
-    id: existingUser._id,
-  };
-
-  const token = jwt.sign(payload, "simbanic", {
-    expiresIn: "1d",
-  });
+  const tokens = GenerateTokens(existingUser)
+  const  {accessToken, refreshToken} = tokens
 
   res.status(200).json({
     message: "Log In successfully.",
-    token: token,
+    accessToken: accessToken,
+    refreshToken: refreshToken,
   });
 };
 

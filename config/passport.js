@@ -17,24 +17,11 @@ passport.use(
     } catch (error) {
       return done(error, false);
     }
-
-    // UserModel.findOne({ id: jwt_payload.sub }, function (err, user) {
-    //   if (err) {
-
-    //   }
-    //   if (user) {
-    //     return done(null, user);
-    //   } else {
-    //     return done(null, false);
-    //   }
-    // });
   })
 );
 
-// passport.js
-
 passport.serializeUser((user, done) => {
-  done(null, user.id); // Use the unique identifier here
+  done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
