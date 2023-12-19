@@ -8,6 +8,8 @@ import express from "express";
 import passport from "passport";
 import session from "express-session";
 import userController from "./controllers/userController.js";
+import jwt from "jsonwebtoken";
+import GenerateTokens from "./utils/tokens.js";
 
 const app = express();
 const port = 8000;
@@ -47,13 +49,14 @@ app.get(
 
 app.post("/api/refresh-token", (req, res) => {
   const { refreshToken } = req.body;
+  console.log(refreshToken);
 
   jwt.verify(refreshToken, "simbanic_refresh", (err, user) => {
     if (err) {
       return res.sendStatus(403);
     }
 
-    const accessToken = generateAccessToken(user);
+    const accessToken = GenerateTokens(user);
     res.json({ accessToken });
   });
 });

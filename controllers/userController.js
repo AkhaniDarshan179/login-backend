@@ -7,6 +7,7 @@ import twilio from "twilio";
 import GenerateTokens from "../utils/tokens.js";
 
 const createUser = async (req, res) => {
+  console.log("req", req.body);
   const errors = validationResult(req).mapped();
 
   if (errors.password) {
