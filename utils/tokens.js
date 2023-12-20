@@ -7,11 +7,11 @@ const GenerateTokens = (user) => {
   };
 
   const accessToken = jwt.sign(payload, "simbanic", {
-    expiresIn: "10sec",
+    expiresIn: "1d",
   });
 
-  const refreshToken = jwt.sign({accessToken}, "simbanic_refresh", {
-    expiresIn: "1d",
+  const refreshToken = jwt.sign({ accessToken }, "simbanic_refresh", {
+    expiresIn: "7d",
   });
 
   return { accessToken, refreshToken };

@@ -49,15 +49,16 @@ app.get(
 
 app.post("/api/refresh-token", (req, res) => {
   const { refreshToken } = req.body;
-  console.log(refreshToken);
+  // console.log(refreshToken);
 
   jwt.verify(refreshToken, "simbanic_refresh", (err, user) => {
     if (err) {
       return res.sendStatus(403);
     }
 
-    const accessToken = GenerateTokens(user);
-    res.json({ accessToken });
+    const tokens = GenerateTokens(user);
+    const accessToken = tokens.accessToken;
+    res.status(200).json({ accessToken });
   });
 });
 
